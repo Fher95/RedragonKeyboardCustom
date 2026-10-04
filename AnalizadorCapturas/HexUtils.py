@@ -1,22 +1,30 @@
 def comparar_hex(hex1, hex2):
     b1 = bytes.fromhex(hex1)
     b2 = bytes.fromhex(hex2)
-    
-    print(f"Longitud B1: {len(b1)} bytes | Longitud B2: {len(b2)} bytes\n")
-    print(f"{'Offset (Decimal)':<18} | {'Offset (Hex)':<14} | {'Valor A (Hex)':<14} | {'Valor B (Hex)'}")
-    print("-" * 65)
-    
     diferencias = 0
+    diff_rows = []
     for i in range(min(len(b1), len(b2))):
         if b1[i] != b2[i]:
             offset_hex = f"0x{i:04X}"
             val_a = f"0x{b1[i]:02X}"
             val_b = f"0x{b2[i]:02X}"
-            print(f"{i:<18} | {offset_hex:<14} | {val_a:<14} | {val_b}")
+            # print(f"{i:<18} | {offset_hex:<14} | {val_a:<14} | {val_b}")
+            diff_rows.append(f"{i:<18} | {offset_hex:<14} | {val_a:<14} | {val_b}")
             diferencias += 1
-            
+    print_differences(diff_rows, b1, b2)
+    return diferencias
+
+def print_differences(rows: list[str], b1, b2):
+    if (len(rows) == 0) and __name__ != "__main__":
+        return
+    print("")
+    print(f"Longitud B1: {len(b1)} bytes | Longitud B2: {len(b2)} bytes\n")
+    print(f"{'Offset (Decimal)':<18} | {'Offset (Hex)':<14} | {'Valor A (Hex)':<14} | {'Valor B (Hex)'}")
     print("-" * 65)
-    print(f"Total de bytes diferentes: {diferencias}")
+    for row in rows:
+        print(row)
+    print("-" * 65)
+    print(f"Total de bytes diferentes: {len(rows)}")
 
 
 if __name__ == "__main__":
